@@ -1,0 +1,25 @@
+.. regu documentation master file, created by
+   sphinx-quickstart on Sun Jul 25 12:47:42 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to regu's documentation!
+================================
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Contents:
+
+   Final/7.1/7.1
+   Final/7.2/7.2
+   Final/7.3/7.3
+   Final/7.4/7.4
+   Final/7.6/7.6
+   DocumentationFct.rst
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

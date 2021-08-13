@@ -1,0 +1,1138 @@
+7.6 Exercices
+=============
+
+Exercice 1
+----------
+
+Soit
+
+.. raw:: html
+
+   <!-- <img src="Images/7.6/Exercice1.png" width=400 height=400 /> -->
+
+.. image:: Images/Exercice1.png
+   :align: center
+   :alt: Exercice1.png
+
+
+On désire asservir le système dont les composants sont :
+:math:`R = 10 k\Omega` et :math:`C = 100 nF` :
+
+1. démontrer que la fonction de transfert s’écrit :
+   :math:`G(p)=\frac{1}{(1+\tau*p)^2}` avec: :math:`\tau = 1 ms`
+
+2. déterminer les paramètres de la réponse indicielle en boucle ouverte
+
+3. déterminer les caractéristiques de la réponse en boucle fermée
+
+4. déterminer par calculs le correcteur qui permettrait d’obtenir une
+   valeur de :math:`\zeta=0.45` ; préciser quel intérêt il y a à choisir
+   cette valeur de :math:`\zeta`
+
+5. déterminer graphiquement le correcteur proportionnel qui permettrait
+   d’assurer une marge de phase de 45° et donner les caractéristiques de
+   la réponse indicielle
+
+6. déterminer le correcteur PI qui permettrait d’assurer une marge de
+   phase de 45° et préciser quel intérêt il propose par rapport au
+   correcteur précédent
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    from IPython.display import Image, display, Markdown
+    
+    from control.matlab import *  # Python Control Systems Toolbox (compatibility with MATLAB)
+    import numpy as np              # Library to manipulate array and matrix
+    import matplotlib.pyplot as plt # Library to create figures and plots
+    import math # Library to be able to do some mathematical operations
+    import ReguLabFct as rlf # Library useful for the laboratory of regulation of HELMo Gramme
+
+Solution:
+~~~~~~~~~
+
+1.
+^^
+
+.. math:: G(p)={\frac{V_s(p)}{V_e(p)}}=(-\frac{R_2}{R_1}*\frac{1}{1+R_2*C_2*p})*(-\frac{R_4}{R_3}*\frac{1}{1+R_4*C_4*p})=\frac{1}{(1+\tau*p)^2}
+
+.. math:: avec: \tau = RC = 10*10^3 * 100*10^{-9} = 1 ms
+
+2.
+^^
+
+Par identification avec un système du second ordre sous forme standard :
+
+.. raw:: html
+
+   <center>
+
+:math:`G_{BO}(p)=\frac{1}{10^{-6}*p^2+2*10^{-3}*p+1}` soit:
+:math:`\begin{cases} \omega_n=1000 rad/s\\ \zeta=1 \end{cases}`
+
+.. raw:: html
+
+   </center>
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    Gbo = tf(1, [10**-6, 2*10**-3, 1])
+    
+    fig = plt.figure("Step Response",figsize=(10,5))
+    ax = fig.subplots()
+    
+    info = rlf.info()
+    
+    rlf.stepWithInfo(Gbo, info, NameOfFigure="Step Response")
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbo, doprint=False)
+    display(Markdown(rf"La réponse indicielle est non-oscillante ($\zeta$={z[1]:.2f}) => pas de dépassement."))
+    
+    display(Markdown(rf"Temps de réponse à 5% = {info.SettlingTime*1000:.0f}ms"))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(rf"Erreur statique = {ep:.1f}%"))
+
+
+
+La réponse indicielle est non-oscillante (:math:`\zeta`\ =1.00) => pas
+de dépassement.
+
+
+
+Temps de réponse à 5% = 5ms
+
+
+
+Erreur statique = 0.7%
+
+
+
+.. image:: output_6_3.png
+   :align: center
+
+
+
+.. warning::
+   Attention: Ici, on cherche l’erreur d’un système en BO!
+
+
+3.
+^^
+
+Si on exprime la fonction de transfert en BF sous forme standard :
+
+.. raw:: html
+
+   <center>
+
+:math:`G_{BF}(p)={\frac {\frac{1}{2}}{1+10^{-3}*p+500*10^{-9}*p^2}}`
+soit: :math:`\begin{cases} \omega_n=1414 rad/s\\ \zeta=0.7 \end{cases}`
+
+.. raw:: html
+
+   </center>
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Step Response",figsize=(10,5))
+    ax = fig.subplots()
+    
+    Gbo = tf(1, [10**-6, 2*10**-3, 1])
+    Gbf = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    rlf.stepWithInfo(Gbf, info, NameOfFigure="Step Response")
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf, doprint=False)
+    display(Markdown(rf"Par programmation, on obtient bien: $\zeta$={z[1]:.1f} et $\omega_n$={wn[1]:.0f} rad/s."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(f"Le gain statique est de {info.DCGain:.1f}"r" donc l'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$="f"{ep:.0f}% (Classe(N)=DegréErreur(r)=0, K=1 en BO)"))
+    
+    display(Markdown(r"Le dépassement est de: $d=100*e^{\frac{-\pi*0.7}{\sqrt{1-0.7^2}}}$="f"{info.Overshoot:.1f}%"r" en $t=\frac{\pi}{1414*\sqrt{1-0.7^2}}$="f"{info.PeakTime*1000:.1f}ms"))
+    
+    display(Markdown(r"Temps de réponse à 5% est de $\frac{3}{\omega_n}$ = "f"{info.SettlingTime*1000:.3f}ms"))
+
+
+
+Par programmation, on obtient bien: :math:`\zeta`\ =0.7 et
+:math:`\omega_n`\ =1414 rad/s.
+
+
+
+Le gain statique est de 0.5 donc l’erreur statique est de
+:math:`\varepsilon_0=\frac{1}{1+K}`\ =50% (Classe(N)=DegréErreur(r)=0,
+K=1 en BO)
+
+
+
+Le dépassement est de:
+:math:`d=100*e^{\frac{-\pi*0.7}{\sqrt{1-0.7^2}}}`\ =4.5% en
+:math:`t=\frac{\pi}{1414*\sqrt{1-0.7^2}}`\ =3.1ms
+
+
+
+Temps de réponse à 5% est de :math:`\frac{3}{\omega_n}` = 2.066ms
+
+
+
+.. image:: output_9_4.png
+   :align: center
+
+
+4.
+^^
+
+Soit la fonction en BO qui devient :
+
+.. math:: G_{BO}(p)=K*\frac{1}{1+2*10^{-3}*p+10^{-6}*p^2}
+
+Ce qui donne en BF:
+
+.. math:: G_{BF}(p)=\frac{\frac{K}{K+1}}{1+\frac{2*10^{-3}}{K+1}*p+\frac{10^{-6}}{K+1}*p^2}
+
+Par identification, on a:
+
+.. raw:: html
+
+   <center>
+
+:math:`\begin{cases} \zeta = 0.45\\ \frac{2\zeta}{\omega_n}=\frac{2*10^{-3}}{K+1}\\ \frac{1}{\omega_n^2}=\frac{10^{-6}}{K+1} \end{cases}`
+
+.. raw:: html
+
+   </center>
+
+D’où
+
+.. raw:: html
+
+   <center>
+
+:math:`\begin{cases} \zeta=0.45\\ K=3.938=11.9 dB\\ \omega_n=2222 rad/s \end{cases}`
+
+.. raw:: html
+
+   </center>
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Step Response",figsize=(10,5))
+    ax = fig.subplots()
+    
+    Gbo = tf(3.938, [10**-6, 2*10**-3, 1])
+    Gbf = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    rlf.stepWithInfo(Gbf, info, NameOfFigure="Step Response")
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf, doprint=False)
+    display(Markdown(rf"Par programmation, on obtient bien: $\zeta$={z[1]:.2f} et $\omega_n$={wn[1]:.0f} rad/s."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(f"Le gain statique est de {info.DCGain:.1f}"r" donc l'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$="f"{ep:.0f}% (car N=r=0, K=3.94 en BO)."))
+    
+    display(Markdown("L'intrérêt de choisir un $\zeta$ de 0.45 permet d'avoir un système présentant le meilleur compromis: temps de réponse/dépassement (stabilité)."))
+    
+    display(Markdown(r"Le dépassement est de: $d=100*e^{\frac{-\pi*0.7}{\sqrt{1-0.7^2}}}$="f"{info.Overshoot:.1f}%"r" en $t=\frac{\pi}{1414*\sqrt{1-0.7^2}}$="f"{info.PeakTime*1000:.1f}ms"))
+    
+    display(Markdown(r"Temps de réponse à 5% est de $\frac{3}{\omega_0}$ = "f"{info.SettlingTime*1000:.3f}ms"))
+
+
+
+Par programmation, on obtient bien: :math:`\zeta`\ =0.45 et
+:math:`\omega_n`\ =2222 rad/s.
+
+
+
+Le gain statique est de 0.8 donc l’erreur statique est de
+:math:`\varepsilon_0=\frac{1}{1+K}`\ =20% (car N=r=0, K=3.94 en BO).
+
+
+
+L’intrérêt de choisir un :math:`\zeta` de 0.45 permet d’avoir un système
+présentant le meilleur compromis: temps de réponse/dépassement
+(stabilité).
+
+
+
+Le dépassement est de:
+:math:`d=100*e^{\frac{-\pi*0.7}{\sqrt{1-0.7^2}}}`\ =20.6% en
+:math:`t=\frac{\pi}{1414*\sqrt{1-0.7^2}}`\ =1.6ms
+
+
+
+Temps de réponse à 5% est de :math:`\frac{3}{\omega_0}` = 2.364ms
+
+
+
+.. image:: output_11_5.png
+   :align: center
+
+
+5.
+^^
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    Gbo = tf(1, [10**-6, 2*10**-3, 1])
+    
+    MP = 45
+    
+    fig = plt.figure("Bode",figsize=(10,5))
+    ax = fig.subplots()
+    mag, w = rlf.getValues(Gbo, -180+MP, printValue=False, NameOfFigure="Bode")
+    
+    Kp = 1/mag  # Donne directement la valeur de l'amplitude => Pas besoin de la convertir à partir d'une valeur en dB + Kp va à l'inverse de ce qu'on mesure
+    
+    display(Markdown(r"Graphiquement, on relève que pour $\varphi=-135°$, $M_{dB}$ ="f" {20*np.log10(mag):.1f} dB."))
+    display(Markdown(r"On choisira un correcteur P: $K_p$ ="f" {-20*np.log10(mag):.1f} dB = {Kp:.2f}."))
+
+
+
+Graphiquement, on relève que pour :math:`\varphi=-135°`, :math:`M_{dB}`
+= -16.7 dB.
+
+
+
+On choisira un correcteur P: :math:`K_p` = 16.7 dB = 6.82.
+
+
+
+.. image:: output_13_2.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Nichols",figsize=(10,5))
+    ax = fig.subplots()
+    rlf.nichols(Gbo, labels=['G(p)'], NameOfFigure = "Nichols")
+    rlf.nichols(Kp*Gbo, labels=['Kp*G(p)'], NameOfFigure = "Nichols", linestyle = '-.')
+    ax.plot(-180+MP, 0,'k+'); # ; pour supprimer les lignes de sortie matplotlib
+    ax.arrow(-180+MP, 20*np.log10(mag), 0, -20*np.log10(mag)-2, 
+             length_includes_head=True, width=.05, head_width=5, head_length=3, color='k');
+    
+    # Vérification de la marge de phase du sys
+    gm, pm, wg, wp = margin(Kp*Gbo) # Extract the gain margin (Gm) and the phase margin (Pm)
+    print("Marge de phase du système corrigé = {:.1f}°.".format(pm))
+
+
+.. parsed-literal::
+
+    Marge de phase du système corrigé = 45.0°.
+    
+
+
+.. image:: output_14_1.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Step Response",figsize=(10,5))
+    ax = fig.subplots()
+    
+    Gbo = tf(Kp, [10**-6, 2*10**-3, 1])
+    Gbf = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    rlf.stepWithInfo(Gbf, info, NameOfFigure="Step Response")
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf, doprint=False)
+    display(Markdown(rf"Les paramètres du système du second ordre deviennent : $\zeta$={z[1]:.2f} et $\omega_n$={wn[1]:.0f} rad/s."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$="f"{ep:.0f}% (N=r=0, K=6.82 en BO)"))
+
+
+
+Les paramètres du système du second ordre deviennent :
+:math:`\zeta`\ =0.36 et :math:`\omega_n`\ =2797 rad/s.
+
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}`\ =13%
+(N=r=0, K=6.82 en BO)
+
+
+
+.. image:: output_15_2.png
+   :align: center
+
+
+6. Détermination du correcteur PI:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  Constante de temps d’intégration : :math:`\tau_I = 1ms` (suppression
+   d’un pôle)
+
+   le système devient, en BO :
+   :math:`G_{BO}(p)=\frac{K_P}{10^{-3}*p*(1+10^{-3}*p)}`
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    G = tf(1, [10**-6, 2*10**-3, 1])
+    tI = 0.001
+    Corr = tf([tI, 1], [tI, 0]) # Correcteur avec Kp = 1
+    Gbo = Corr*G
+    
+    MP = 45
+    
+    fig = plt.figure("Bode",figsize=(10,5))
+    ax = fig.subplots()
+    mag, w = rlf.getValues(Gbo, -180+MP, printValue=False, NameOfFigure="Bode")
+    
+    Kp = 1/mag  # Donne directement la valeur de l'amplitude => Pas besoin de la convertir à partir d'une valeur en dB + Kp va à l'inverse de ce qu'on mesure
+    
+    Corr = Kp*tf([tI, 1], [tI, 0]) # Correcteur avec le bon Kp
+    Gbo = Corr*G
+    
+    display(Markdown(r"- On calcule : $\varphi$ = "f"{-180+MP}° pour"r" $\omega$ = "f" {w:.0f} rad/s ce qui correspond à "r"$M_{dB}$ ="f""" {20*np.log10(mag):.1f} dB.
+        
+        On choisira un correcteur P: """r"$K_p$ ="f""" {-20*np.log10(mag):.1f} dB = {Kp:.3f}.
+        
+        soit le correcteur : """r"$C(p)=\frac{1416*(1+10^{-3}*p)}{p}$"))
+
+
+
+-  On calcule : :math:`\varphi` = -135° pour :math:`\omega` = 1001 rad/s
+   ce qui correspond à :math:`M_{dB}` = -3.0 dB.
+
+   On choisira un correcteur P: :math:`K_p` = 3.0 dB = 1.416.
+
+   soit le correcteur : :math:`C(p)=\frac{1416*(1+10^{-3}*p)}{p}`
+
+
+
+.. image:: output_17_1.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Nichols",figsize=(10,5))
+    ax = fig.subplots()
+    rlf.nichols(G, labels=['G(p)'], NameOfFigure = "Nichols")
+    frequencies = linspace(1, 100000, 100000)
+    rlf.nichols(Gbo, omega=frequencies, labels=['C(p)*G(p)'], NameOfFigure = "Nichols", linestyle = '-.')
+    ax.plot(-180+MP, 0,'k+'); # ; pour supprimer les lignes de sortie matplotlib
+
+
+
+.. image:: output_18_0.png
+   :align: center
+
+
+L’erreur statique est de :math:`\varepsilon_0=0` (r=0 mais N=1 grâce au
+correcteur I).
+
+Exercice 2
+----------
+
+Soit un ampli op (sans compensation interne en fréquence) dont la
+fonction de transfert en BO est donnée par :
+
+.. raw:: html
+
+   <center>
+
+:math:`G(jf)=\frac{A_0}{(1+j\frac{f}{f_1})*(1+j\frac{f}{f_2})}` avec:
+:math:`\begin{cases} A_0 = 10^2\\ f_1 = 1 MHz\\ f_2 = 10 MHz \end{cases}`
+
+.. raw:: html
+
+   </center>
+
+On vous demande de:
+
+1. analyser le diagramme de Black-Nichols qui vous est donné pour en
+   déduire les caractéristiques du système en BF
+
+.. raw:: html
+
+   <!-- <img src="Images/7.6/Exercice2_Nichols.png" width=800 height=800 /> -->
+
+.. image:: Images/Exercice2_Nichols.png
+   :align: center
+   :alt: Exercice2_Nichols.png
+
+
+2. déterminer le correcteur proportionnel qui permettrait d’assurer une
+   marge de phase de 45° et donner les caractéristiques de la réponse
+   indicielle
+
+3. déterminer le correcteur PI qui permettrait d’assurer une marge de
+   phase de 45° et préciser quel intérêt il propose par rapport au
+   correcteur précédent
+
+Solution:
+~~~~~~~~~
+
+1.
+^^
+
+Le système ne présente pas une marge de phase insuffisante : 20°
+
+En boucle fermée : - son gain statique est de 0 dB - le facteur de
+surtension est de 10 dB
+
+⇒ la réponse temporelle présentera une forte oscillation
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    A_0 = 10**2
+    f1 = 10**6
+    f2 = 10**7
+    
+    Gbo = A_0*tf(1, [1/f1, 1])*tf(1, [1/f2, 1])
+    Gbf=feedback(Gbo)
+    
+    info = rlf.info()
+    
+    T = np.linspace(0, 2.5*10**(-6), 1000)
+    yout, T = step(Gbf, T)
+    
+    fig = plt.figure("Step Response",figsize=(10,5))
+    plt.plot(T, yout)
+    rlf.step_info(T, yout, info) # Rajoute les points intéressants au graphe
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$="f"{ep:.3f}% (N=r=0, K=100 en BO)"))
+    
+    display(Markdown(f"Temps de réponse à 5% = {info.SettlingTime*10**9:.0f} ns"))
+    
+    display(Markdown(f"Le dépassement est de: d="f"{info.Overshoot:.1f}% en t = {info.PeakTime*10**9:.0f} ns"))
+
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}`\ =0.990%
+(N=r=0, K=100 en BO)
+
+
+
+Temps de réponse à 5% = 523 ns
+
+
+
+Le dépassement est de: d=57.6% en t = 100 ns
+
+
+
+.. image:: output_23_3.png
+   :align: center
+
+
+2.
+^^
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    MP = 45
+    
+    fig = plt.figure("Bode",figsize=(10,5))
+    ax = fig.subplots()
+    mag, w = rlf.getValues(Gbo, -180+MP, printValue=False, NameOfFigure="Bode")
+    
+    Kp = 1/mag  # Donne directement la valeur de l'amplitude => Pas besoin de la convertir à partir d'une valeur en dB + Kp va à l'inverse de ce qu'on mesure
+    
+    display(Markdown(r"Graphiquement, on relève que pour $\varphi=-135°$, $M_{dB}$ ="f" {20*np.log10(mag):.1f} dB."))
+    display(Markdown(r"On choisira un correcteur P: $K_p$ ="f" {-20*np.log10(mag):.1f} dB = {Kp:.3f}."))
+
+
+
+Graphiquement, on relève que pour :math:`\varphi=-135°`, :math:`M_{dB}`
+= 14.7 dB.
+
+
+
+On choisira un correcteur P: :math:`K_p` = -14.7 dB = 0.185.
+
+
+
+.. image:: output_25_2.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Nichols",figsize=(10,5))
+    ax = fig.subplots()
+    nichols(Gbo, grid=False)
+    rlf.nichols(Kp*Gbo, labels=['Kp*Gbo(p)'], NameOfFigure = "Nichols")
+    
+    # Vérification de la marge de phase du sys
+    gm, pm, wg, wp = margin(Kp*Gbo) # Extract the gain margin (Gm) and the phase margin (Pm)
+    print("Marge de phase du système corrigé = {:.1f}°.".format(pm))
+    ax.plot(-180+MP, 0,'k+'); # ; pour supprimer les lignes de sortie matplotlib
+    ax.plot(-180+pm, 0,'ko'); # ; pour supprimer les lignes de sortie matplotlib
+
+
+.. parsed-literal::
+
+    Marge de phase du système corrigé = 45.0°.
+    
+
+
+.. image:: output_26_1.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Step Response",figsize=(10,5))
+    ax = fig.subplots()
+    
+    Gbf=feedback(Kp*Gbo)
+    
+    info = rlf.info()
+    
+    T = np.linspace(0, 2.5*10**(-6), 1000)
+    yout, T = step(Gbf, T)
+    
+    fig = plt.figure("Step Response",figsize=(10,5))
+    plt.plot(T, yout)
+    rlf.step_info(T, yout, info) # Rajoute les points intéressants au graphe
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf, doprint=False)
+    display(Markdown(r"Les paramètres du système du second ordre deviennent: $\omega_n$ ="f" {wn[0]:.2e} rad/s et"r" $\zeta$ "f"{z[0]:.3f}."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$="f"{ep:.1f}% (N=r=0, K=18.5 en BO)"))
+    
+    display(Markdown(f"Le dépassement est de: d="f"{info.Overshoot:.1f}% en t = {info.PeakTime*10**9:.0f} ns"))
+    
+    display(Markdown(f"Temps de réponse à 5% = {info.SettlingTime*10**9:.0f} ns "r"($\approx\frac{8}{\omega_n}$)"))
+
+
+
+Les paramètres du système du second ordre deviennent: :math:`\omega_n` =
+1.39e+07 rad/s et :math:`\zeta` 0.394.
+
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}`\ =5.1%
+(N=r=0, K=18.5 en BO)
+
+
+
+Le dépassement est de: d=26.0% en t = 245 ns
+
+
+
+Temps de réponse à 5% = 548 ns (:math:`\approx\frac{8}{\omega_n}`)
+
+
+
+.. image:: output_27_4.png
+   :align: center
+
+
+3. Détermination du correcteur PI:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-  Constante de temps d’intégration :
+   :math:`\tau_I = \frac{1}{2\pi*10^6} = 159 ns` (suppression du pôle
+   dominant)
+
+   le système devient, en BO :
+   :math:`G_{BO}(p)=\frac{100*K_p}{159*10^{-9}*p*(1+159*10^{-9}*p)}`
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    G = A_0*tf(1, [1/(2*math.pi*f1), 1])*tf(1, [1/(2*math.pi*f2), 1])
+    tI = 1/(2*math.pi*10**6)
+    Corr = tf([tI, 1], [tI, 0]) # Correcteur avec Kp = 1
+    Gbo = Corr*G
+    
+    MP = 45
+    
+    fig = plt.figure("Bode",figsize=(10,5))
+    ax = fig.subplots()
+    mag, w = rlf.getValues(Gbo, -180+MP, printValue=False, NameOfFigure="Bode")
+    
+    Kp = 1/mag  # Donne directement la valeur de l'amplitude => Pas besoin de la convertir à partir d'une valeur en dB + Kp va à l'inverse de ce qu'on mesure
+    
+    Corr = tf([tI, 1], [tI, 0]) # Correcteur avec le bon Kp
+    Gbo = Kp*Corr*G
+    
+    display(Markdown(r"- On calcule : $\varphi$ = "f"{-180+MP}° pour"r" $\omega$ = "f" {w:.2e} rad/s ce qui correspond à "r"$M_{dB}$ ="f""" {20*np.log10(mag):.1f} dB.
+        
+        On choisira un correcteur P: """r"$K_p$ ="f""" {-20*np.log10(mag):.1f} dB = {Kp:.4f}.
+        
+        soit le correcteur : """r"""$C(p)=\frac{888*10^3*(1+159.2*10^{-9}*p)}{p}$
+    
+        qui s'écrit : $C(jf)=\frac{141.4*10^3*(1+j\frac{f}{10^{6}})}{jf}$"""))
+
+
+
+-  On calcule : :math:`\varphi` = -135° pour :math:`\omega` = 6.28e+07
+   rad/s ce qui correspond à :math:`M_{dB}` = 17.0 dB.
+
+   On choisira un correcteur P: :math:`K_p` = -17.0 dB = 0.1413.
+
+   soit le correcteur :
+   :math:`C(p)=\frac{888*10^3*(1+159.2*10^{-9}*p)}{p}`
+
+   qui s’écrit :
+   :math:`C(jf)=\frac{141.4*10^3*(1+j\frac{f}{10^{6}})}{jf}`
+
+
+
+.. image:: output_30_1.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Nichols",figsize=(10,5))
+    ax = fig.subplots()
+    frequencies = linspace(10**6, 10**10, 10**4) # Pour pouvoir tracer les points qui nous intéressent
+    rlf.nichols(G, omega=frequencies, labels=['Gbo(p)'], NameOfFigure = "Nichols")
+    rlf.nichols(Corr*G, omega=frequencies, labels=['C_I(p)*Gbo(p)'], NameOfFigure = "Nichols", linestyle = '-.')
+    rlf.nichols(Gbo, omega=frequencies, labels=['C_PI(p)*Gbo(p)'], NameOfFigure = "Nichols", linestyle = '--')
+    ax.plot(-180+MP, 0,'k+'); # ; pour supprimer les lignes de sortie matplotlib
+
+
+
+.. image:: output_31_0.png
+   :align: center
+
+
+Exercice 3
+----------
+
+Soit un amplificateur dont la fonction de transfert en BO est donnée par
+:
+
+.. math:: G(p)=\frac{10}{(1+p)*(1+0.1p)}
+
+On vous demande de:
+
+1. analyser le diagramme de Black-Nichols qui vous est donné
+
+.. image:: Images/Exercice3_Nichols.png
+   :align: center
+   :alt: Exercice3_Nichols.png
+
+
+.. raw:: html
+
+   <!-- <img src="Images/7.6/Exercice3_Nichols.png" width=800 height=800 /> -->
+
+2. déterminer les caractéristiques de la réponse indicielle en BF
+
+3. déterminer le correcteur P, PI ou PID qui permettrait d’assurer une
+   marge de phase de 45°, une erreur statique la plus faible possible et
+   d’obtenir un temps de réponse à 5% de 0,1 s
+
+Solution:
+~~~~~~~~~
+
+1.
+^^
+
+Le système présente une marge de phase de 60°
+
+2.
+^^
+
+Si on exprime la fonction de transfert en BF sous forme standard :
+
+.. raw:: html
+
+   <center>
+
+:math:`G_{BF}(p)=\frac{\frac{10}{11}}{\frac{0.1}{11}p^2+\frac{1.1}{11}p+1}`
+soit:
+:math:`\begin{cases} \omega_n = 10.5 rad/s\\ \zeta = 0.52\\ \end{cases}`
+
+.. raw:: html
+
+   </center>
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    G = tf(10, [1, 1])*tf(1, [0.1, 1])
+    Gbo = G
+    Gbf = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    fig = plt.figure("Step Response",figsize=(10,5))
+    rlf.stepWithInfo(Gbf, info, NameOfFigure = "Step Response")
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf, doprint=False)
+    display(Markdown(rf"Par programmation, on obtient bien: $\omega_n$={wn[1]:.1f} rad/s et $\zeta$={z[1]:.2f}."))
+    print("Gbf = ", Gbf)
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$ = "f"{ep:.3f}% (N=r=0, K=10 en BO)"))
+    
+    display(Markdown(r"Le dépassement est de: d = $100*e^{{\frac{-\pi*0.52}{\sqrt{1-0.52^2}}}}$ = "f"{info.Overshoot:.1f}%"r" en t = $\frac{\pi}{10.5*\sqrt{1-0.52^2}}$ = "f"{info.PeakTime*10**3:.0f} ms"))
+    
+    display(Markdown(r"Le temps de réponse à 5% est de $\frac{5}{\omega_n}$ = "f"{info.SettlingTime*10**3:.0f} ms (>0.1s demandée)"))
+
+
+
+Par programmation, on obtient bien: :math:`\omega_n`\ =10.5 rad/s et
+:math:`\zeta`\ =0.52.
+
+
+.. parsed-literal::
+
+    Gbf =  
+             10
+    --------------------
+    0.1 s^2 + 1.1 s + 11
+    
+    
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}` = 9.073%
+(N=r=0, K=10 en BO)
+
+
+
+Le dépassement est de: d =
+:math:`100*e^{{\frac{-\pi*0.52}{\sqrt{1-0.52^2}}}}` = 14.4% en t =
+:math:`\frac{\pi}{10.5*\sqrt{1-0.52^2}}` = 352 ms
+
+
+
+Le temps de réponse à 5% est de :math:`\frac{5}{\omega_n}` = 505 ms
+(>0.1s demandée)
+
+
+
+.. image:: output_36_5.png
+   :align: center
+
+
+3.
+^^
+
+a) Correcteur P
+'''''''''''''''
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    MP = 45
+    
+    fig = plt.figure("Bode",figsize=(10,5))
+    ax = fig.subplots()
+    mag, w = rlf.getValues(Gbo, -180+MP, printValue=False, NameOfFigure="Bode")
+    
+    Kp = 1/mag  # Donne directement la valeur de l'amplitude => Pas besoin de la convertir à partir d'une valeur en dB + Kp va à l'inverse de ce qu'on mesure
+    
+    display(Markdown(r"Graphiquement, on relève que pour $\varphi=-135°$, $M_{dB}$ ="f" {20*np.log10(mag):.1f} dB."))
+    display(Markdown(r"On choisira un correcteur P: $K_p$ ="f" {-20*np.log10(mag):.1f} dB = {Kp:.3f}."))
+
+
+
+Graphiquement, on relève que pour :math:`\varphi=-135°`, :math:`M_{dB}`
+= -5.3 dB.
+
+
+
+On choisira un correcteur P: :math:`K_p` = 5.3 dB = 1.843.
+
+
+
+.. image:: output_38_2.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    Gbo = Kp*G
+    Gbf_P = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    fig = plt.figure("Step Response",figsize=(10,5))
+    rlf.step_(Gbf, NameOfFigure = "Step Response", sysName = 'Gbf', linestyle='-')
+    rlf.stepWithInfo(Gbf_P, info, NameOfFigure = "Step Response",  sysName = 'Kp*Gbf', linestyle='-.')
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf_P, doprint=False)
+    display(Markdown(r"Les paramètres du système du second ordre deviennent: $\omega_n$ ="f" {wn[0]:.1f} rad/s et"r" $\zeta$ "f"{z[0]:.3f}."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$ = "f"{ep:.1f}% (N=r=0, K=18.43 en BO)"))
+    
+    display(Markdown(r"Le dépassement est de: d = "f"{info.Overshoot:.1f}%"r" (= $100*e^{{\frac{-\pi*0.4}{\sqrt{1-0.4^2}}}}$) en t = "f"{info.PeakTime*10**3:.0f} ms"r" (= $\frac{\pi}{13.9*\sqrt{1-0.4^2}}$)"))
+    
+    display(Markdown(r"Le temps de réponse à 5% est de "f"{info.SettlingTime*10**3:.0f} ms ("r" $\approx\frac{8}{\omega_n}$) (>0.1s demandée)"))
+
+
+
+Les paramètres du système du second ordre deviennent: :math:`\omega_n` =
+13.9 rad/s et :math:`\zeta` 0.395.
+
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}` = 5.1%
+(N=r=0, K=18.43 en BO)
+
+
+
+Le dépassement est de: d = 25.8% (=
+:math:`100*e^{{\frac{-\pi*0.4}{\sqrt{1-0.4^2}}}}`) en t = 245 ms (=
+:math:`\frac{\pi}{13.9*\sqrt{1-0.4^2}}`)
+
+
+
+Le temps de réponse à 5% est de 551 ms (
+:math:`\approx\frac{8}{\omega_n}`) (>0.1s demandée)
+
+
+
+.. image:: output_39_4.png
+   :align: center
+
+
+b) Correcteur PI
+''''''''''''''''
+
+-  Constante de temps d’intégration : :math:`\tau_I = 1 s` (suppression
+   du pôle dominant)
+
+   le système devient, en BO :
+   :math:`G_{BO}(p)=\frac{10*K_p}{p*(1+0.1*p)}`
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    tI = 1
+    Corr = tf([tI, 1], [tI, 0]) # Correcteur avec Kp = 1
+    Gbo = Corr*G
+    
+    MP = 45
+    
+    fig = plt.figure("Bode",figsize=(10,5))
+    ax = fig.subplots()
+    mag, w = rlf.getValues(Gbo, -180+MP, printValue=False, NameOfFigure="Bode")
+    
+    Kp = 1/mag  # Donne directement la valeur de l'amplitude => Pas besoin de la convertir à partir d'une valeur en dB + Kp va à l'inverse de ce qu'on mesure
+    
+    Corr = tf([tI, 1], [tI, 0]) # Correcteur avec le bon Kp
+    Gbo = Kp*Corr*G
+    
+    display(Markdown(r"- On calcule : $\varphi$ = "f"{-180+MP}° pour"r" $\omega$ = "f" {w:.0f} rad/s ce qui correspond à "r"$M_{dB}$ ="f""" {20*np.log10(mag):.1f} dB.
+        
+        On choisira un correcteur P: """r"$K_p$ ="f""" {-20*np.log10(mag):.1f} dB = {Kp:.2f}.
+        
+        soit le correcteur : """r"$C(p)=\frac{1.41*(1+p)}{p}$"))
+
+
+
+-  On calcule : :math:`\varphi` = -135° pour :math:`\omega` = 10 rad/s
+   ce qui correspond à :math:`M_{dB}` = -3.0 dB.
+
+   On choisira un correcteur P: :math:`K_p` = 3.0 dB = 1.41.
+
+   soit le correcteur : :math:`C(p)=\frac{1.41*(1+p)}{p}`
+
+
+
+.. image:: output_42_1.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Nichols",figsize=(10,5))
+    ax = fig.subplots()
+    rlf.nichols(G, labels=['Gbo(p)'], NameOfFigure = "Nichols")
+    rlf.nichols(Corr*G, labels=['C_I(p)*Gbo(p)'], NameOfFigure = "Nichols", linestyle = '-.')
+    rlf.nichols(Gbo, labels=['C_PI(p)*Gbo(p)'], NameOfFigure = "Nichols", linestyle = '--')
+    ax.plot(-180+MP, 0,'k+'); # ; pour supprimer les lignes de sortie matplotlib
+
+
+
+.. image:: output_43_0.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    Gbf_PI = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    t = np.linspace(0, 1.35, 1000) # Pour bien voir la phase transitoire
+    fig = plt.figure("Step Response",figsize=(10,5))
+    rlf.step_(Gbf, T=t, NameOfFigure = "Step Response", sysName = 'Gbf', linestyle='-')
+    rlf.step_(Gbf_P, T=t, NameOfFigure = "Step Response",  sysName = 'Kp*Gbf', linestyle='-.')
+    rlf.stepWithInfo(Gbf_PI, info, T=t, NameOfFigure = "Step Response",  sysName = 'C_PI*Gbf', linestyle='--')
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf_PI, doprint=False)
+    display(Markdown(r"Les paramètres du système du second ordre deviennent: $\omega_n$ ="f" {wn[0]:.1f} rad/s et"r" $\zeta$ "f"{z[0]:.3f}."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$ = "f"{ep:.1f}% (r=0 mais N=1 BO grâce au correcteur I)"))
+    
+    display(Markdown(r"Le dépassement est de: d = "f"{info.Overshoot:.1f}%"r" (= $100*e^{{\frac{-\pi*0.4}{\sqrt{1-0.4^2}}}}$) en t = "f"{info.PeakTime*10**3:.0f} ms"r" (= $\frac{\pi}{11.9*\sqrt{1-0.4^2}}$)"))
+    
+    display(Markdown(r"Le temps de réponse à 5% est de "f"{info.SettlingTime*10**3:.0f} ms ("r" $\approx\frac{8}{\omega_n}$) (>0.1s demandée)"))
+
+
+
+Les paramètres du système du second ordre deviennent: :math:`\omega_n` =
+11.9 rad/s et :math:`\zeta` 0.421.
+
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}` = 0.0% (r=0
+mais N=1 BO grâce au correcteur I)
+
+
+
+Le dépassement est de: d = 23.3% (=
+:math:`100*e^{{\frac{-\pi*0.4}{\sqrt{1-0.4^2}}}}`) en t = 291 ms (=
+:math:`\frac{\pi}{11.9*\sqrt{1-0.4^2}}`)
+
+
+
+Le temps de réponse à 5% est de 618 ms (
+:math:`\approx\frac{8}{\omega_n}`) (>0.1s demandée)
+
+
+
+.. image:: output_44_4.png
+   :align: center
+
+
+c) Correcteur PID
+'''''''''''''''''
+
+-  Constante de temps d’intégration : :math:`\tau_I = 1 s` et
+   :math:`\tau_d = 0.1 s` (suppression des pôles dominants)
+
+   le système corrigé devient, en BO :
+
+   .. math:: G_{BO}(p)=\frac{10*K_p}{p}
+
+   ,soit en BF:
+
+   .. math:: G_{BF}(p)=\frac{1}{1+\frac{p}{10*K_p}}
+
+   Soit un système du premier ordre dont le temps de réponse à 5% (=
+   :math:`3\tau`) s’exprime : :math:`\frac{3}{10*K_P}`
+
+   Pour obtenir :math:`t_{r5\%}=0.1 s`, il faut : :math:`K_P = 3`.
+
+La réponse indicielle sera celle d’un système du premier ordre (erreur
+statique nulle et pas de dépassement)
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    tI = 1
+    tD = 0.1
+    Kp = 3
+    Corr = Kp*tf([tD, 1], [1, 0])*tf([tI, 1], [0, 1]) # Correcteur avec Kp = 1
+    Gbo = Corr*G
+    Gbf_PID = feedback(Gbo)
+    
+    info = rlf.info()
+    
+    t = np.linspace(0, 1.35, 1000) # Pour bien voir la phase transitoire
+    fig = plt.figure("Step Response",figsize=(10,5))
+    rlf.step_(Gbf, T=t, NameOfFigure = "Step Response", sysName = 'Gbf', linestyle='-')
+    rlf.step_(Gbf_P, T=t, NameOfFigure = "Step Response",  sysName = 'Kp*Gbf', linestyle='-.')
+    rlf.step_(Gbf_PI, T=t, NameOfFigure = "Step Response",  sysName = 'C_PI*Gbf', linestyle='--')
+    rlf.stepWithInfo(Gbf_PID, info, T=t, NameOfFigure = "Step Response",  sysName = 'C_PID*Gbf', linestyle=':')
+    
+    # Calcul du coefficient d'amortissement et pulsation naturelle
+    wn, z, poles = damp(Gbf_PID, doprint=False)
+    display(Markdown(r"Les paramètres du système du second ordre deviennent: $\omega_n$ ="f" {wn[0]:.1f} rad/s et"r" $\zeta$ "f"{z[0]:.3f}."))
+    
+    # Calcul de l'erreur statique
+    ep = (1-info.DCGain)*100
+    display(Markdown(r"L'erreur statique est de $\varepsilon_0=\frac{1}{1+K}$ = "f"{ep:.1f}% (r=0 mais N=1 BO grâce au correcteur I)"))
+    
+    display(Markdown(r"Le dépassement est de: d = "f"{info.Overshoot:.1f}%"r" (= $100*e^{{\frac{-\pi*1}{\sqrt{1-1^2}}}}$) en t = "f"{info.PeakTime*10**3:.0f} ms"r" (= $\frac{\pi}{30*\sqrt{1-1^2}}$)"))
+    
+    display(Markdown(r"Le temps de réponse à 5% est de "f"{info.SettlingTime*10**3:.0f} ms (= 0.1s demandée => OK)"))
+
+
+
+Les paramètres du système du second ordre deviennent: :math:`\omega_n` =
+30.0 rad/s et :math:`\zeta` 1.000.
+
+
+
+L’erreur statique est de :math:`\varepsilon_0=\frac{1}{1+K}` = 0.0% (r=0
+mais N=1 BO grâce au correcteur I)
+
+
+
+Le dépassement est de: d = 0.0% (=
+:math:`100*e^{{\frac{-\pi*1}{\sqrt{1-1^2}}}}`) en t = 1350 ms (=
+:math:`\frac{\pi}{30*\sqrt{1-1^2}}`)
+
+
+
+Le temps de réponse à 5% est de 100 ms (= 0.1s demandée => OK)
+
+
+
+.. image:: output_47_4.png
+   :align: center
+
+
+.. hidden-code-block:: ipython3
+   :starthidden: True
+
+    fig = plt.figure("Nichols",figsize=(10,5))
+    ax = fig.subplots()
+    rlf.nichols(G, labels=['Gbo(p)'], NameOfFigure = "Nichols")
+    rlf.nichols(Gbo, labels=['C_PID(p)*Gbo(p)'], NameOfFigure = "Nichols", linestyle = '-.')
+    ax.plot(-180+MP, 0,'k+'); # ; pour supprimer les lignes de sortie matplotlib
+
+
+
+.. image:: output_48_0.png
+   :align: center
+

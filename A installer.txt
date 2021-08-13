@@ -1,0 +1,4 @@
+pip install sphinx-rtd-theme
+pip install sphinx-togglebutton
+pip install sphinx-copybutton
+pip install myst-nb
