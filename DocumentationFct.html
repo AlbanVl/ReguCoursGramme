@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Documentation de la librairie ReguLabFct &mdash; Documentation Regu 0</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
+  <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/togglebutton.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+        <script >var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="7.6 Exercices" href="Final/7.6/7.6.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Regu
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Final/7.1/7.1.html">7.1.2 Exercices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Final/7.2/7.2.html">7.2.7 Exercices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Final/7.3/7.3.html">7.3.6 Exercices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Final/7.4/7.4.html">7.4.6 Exercices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Final/7.6/7.6.html">7.6 Exercices</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation de la librairie ReguLabFct</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Regu</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Documentation de la librairie ReguLabFct</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/DocumentationFct.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-ReguLabFct">
+<span id="documentation-de-la-librairie-regulabfct"></span><h1>Documentation de la librairie ReguLabFct<a class="headerlink" href="#module-ReguLabFct" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Created on Tue May 11 10:23:05 2021</p>
+<p>Fonctions utiles pour utiliser python en régu</p>
+<p>&#64;author: Alban Van Laethem</p>
+<dl class="py function">
+<dt id="ReguLabFct.addNoise">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">addNoise</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndNb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.addNoise" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Add noise to a given signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>t: 1D array</strong></dt><dd><p>Time vector.</p>
+</dd>
+<dt><strong>signal: 1D array</strong></dt><dd><p>Signal at which to add noise.</p>
+</dd>
+<dt><strong>variance: float, optional</strong></dt><dd><p>Variance of random numbers. The default is 0.05.</p>
+</dd>
+<dt><strong>rndNb: int, optional</strong></dt><dd><p>Seed for RandomState. The default is None.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>signal_noisy: 1D array</dt><dd><p>Noisy signal.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.default_frequency_range">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">default_frequency_range</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">syslist</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.default_frequency_range" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Compute a reasonable default frequency range for frequency
+domain plots.</p>
+<p>Finds a reasonable default frequency range by examining the features
+(poles and zeros) of the systems in syslist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>syslist: list of Lti</strong></dt><dd><p>List of linear input/output systems (single system is OK)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>omega: array</dt><dd><p>Range of frequencies in rad/sec</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">matlab</span> <span class="kn">import</span> <span class="n">ss</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span> <span class="o">=</span> <span class="n">ss</span><span class="p">(</span><span class="s2">&quot;1. -2; 3. -4&quot;</span><span class="p">,</span> <span class="s2">&quot;5.; 7&quot;</span><span class="p">,</span> <span class="s2">&quot;6. 8&quot;</span><span class="p">,</span> <span class="s2">&quot;9.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">omega</span> <span class="o">=</span> <span class="n">default_frequency_range</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.generateTfFromCharac">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">generateTfFromCharac</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.generateTfFromCharac" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Generate a second order transfer function based on its typical 
+characteristics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>G: float</strong></dt><dd><p>Gain of the transfer function.</p>
+</dd>
+<dt><strong>wn: float</strong></dt><dd><p>Frequency of the transfer function.</p>
+</dd>
+<dt><strong>zeta: float</strong></dt><dd><p>Damping coefficient of the transfer function.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ft: TransferFunction</dt><dd><p>The linear system with those charcteristics</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.getClass">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">getClass</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.getClass" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Get the class of the given system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sys: LTI</strong></dt><dd><p>System analysed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>sysClass: int</dt><dd><p>Class of the given system.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.getOrder">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">getOrder</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.getOrder" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Get the order of the given system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sys: LTI</strong></dt><dd><p>System analysed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>sysClass: int</dt><dd><p>Order of the given system.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.getValues">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">getValues</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phaseValue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printValue</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NameOfFigure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.getValues" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Get the values of the gain and the frequency at a given phase of the 
+system.</p>
+<p>Get the values of the gain and the frequency at a given phase from given 
+arrays of gains, phases and frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sys: Linear Time Invariant (LTI)</strong></dt><dd><p>System analysed.</p>
+</dd>
+<dt><strong>phaseValue: float</strong></dt><dd><p>Phase at which we want to get the gain and frequency values.</p>
+</dd>
+<dt><strong>mag: 1D array, optional</strong></dt><dd><p>Array of gains (not in dB).</p>
+</dd>
+<dt><strong>phase: 1D array, optional</strong></dt><dd><p>Array of phases.</p>
+</dd>
+<dt><strong>omega: 1D array, optional</strong></dt><dd><p>Array of frequencies (in radians).</p>
+</dd>
+<dt><strong>printValue: boolean, optional</strong></dt><dd><p>print values if True (by default).</p>
+</dd>
+<dt><strong>NameOfFigure: String, optional</strong></dt><dd><p>Name of the figure in which to plot.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>mag: float</dt><dd><p>The gain value for the given phase.</p>
+</dd>
+<dt>omega: float</dt><dd><p>The gain value in rad/sec for the given phase.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ReguLabFct.info">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">info</span></code><a class="headerlink" href="#ReguLabFct.info" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Object to store all the interesting informations provided by the step
+response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>RiseTime: float</strong></dt><dd><p>Time it takes for the response to rise from 10% to 90% of the 
+steady-state response.</p>
+</dd>
+<dt><strong>SettlingTime: float</strong></dt><dd><p>Time it takes for the error e(t) = |y(t) – yfinal| between the response
+y(t) and the steady-state response yfinal to fall below 5% of the peak
+value of e(t).</p>
+</dd>
+<dt><strong>SettlingMin: float</strong></dt><dd><p>Minimum value of y(t) once the response has risen.</p>
+</dd>
+<dt><strong>SettlingMax: float</strong></dt><dd><p>Maximum value of y(t) once the response has risen.</p>
+</dd>
+<dt><strong>Overshoot: float</strong></dt><dd><p>Percentage overshoot, relative to yfinal.</p>
+</dd>
+<dt><strong>Undershoot: float</strong></dt><dd><p>Percentage undershoot.</p>
+</dd>
+<dt><strong>Peak: float</strong></dt><dd><p>Peak absolute value of y(t).</p>
+</dd>
+<dt><strong>PeakTime: float</strong></dt><dd><p>Time at which the peak value occurs.</p>
+</dd>
+<dt><strong>DCGain: float</strong></dt><dd><p>Low-frequency (DC) gain of LTI system.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.loadFT">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">loadFT</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.loadFT" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Load the data of the transfert function from a given csv file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file: String</strong></dt><dd><p>Name of the csv file (default = « data.csv »).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.nichols">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">nichols</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NameOfFigure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.nichols" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Nichols plot for a system</p>
+<p>Plots a Nichols plot for the system over a (optional) frequency range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sys_list: list of LTI, or LTI</strong></dt><dd><p>List of linear input/output systems (single system is OK)</p>
+</dd>
+<dt><strong>omega: array_like, optional</strong></dt><dd><p>Range of frequencies (list or bounds) in rad/sec</p>
+</dd>
+<dt><strong>grid: boolean, optional</strong></dt><dd><p>True if the plot should include a Nichols-chart grid. Default is True.</p>
+</dd>
+<dt><strong>data: boolean, optional</strong></dt><dd><p>True if we must return x and y (default is False)</p>
+</dd>
+<dt><strong>ax: axes.subplots.AxesSubplot, optional</strong></dt><dd><p>The axe on which to plot</p>
+</dd>
+<dt><strong>linestyle: “-.” , “–” , “:” , “-“ , optional</strong></dt><dd><p>The line style used to plot the nichols graph (default is “-“).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>if data == True:</dt><dd><dl class="simple">
+<dt>x: 1D array</dt><dd><p>Abscisse vector</p>
+</dd>
+<dt>y: 1D array</dt><dd><p>Ordinate vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.pidTuner">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">pidTuner</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Kp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ki</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Kd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.pidTuner" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>PID Tuner to see the modifications of the PID parameters on a given system.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>H: LTI</strong></dt><dd><p>Transfert function of the system (open loop) to regulate.</p>
+</dd>
+<dt><strong>Kp: float, optionnal</strong></dt><dd><p>Proportionnal parameter of the PID controller (default = 1).</p>
+</dd>
+<dt><strong>Ki: float, optionnal</strong></dt><dd><p>Integral parameter of the PID controller (default = 0).</p>
+<p>Reminder: Ki = Kp/tI</p>
+</dd>
+<dt><strong>Kd: float, optionnal</strong></dt><dd><p>Derivative parameter of the PID controller (default = 0).</p>
+<p>Reminder: Kd = Kp*tD</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.saveFT">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">saveFT</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.saveFT" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Save the data of the transfert function into a csv file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>t: 1D array</strong></dt><dd><p>Time vector.</p>
+</dd>
+<dt><strong>y: 1D array</strong></dt><dd><p>Response of the system.</p>
+</dd>
+<dt><strong>x: 1D array, optional</strong></dt><dd><p>Input of the system (default = [0, 1, …, 1])</p>
+</dd>
+<dt><strong>name: String</strong></dt><dd><p>Name of the csv file (default = « data »).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.stepWithInfo">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">stepWithInfo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SettlingTimeThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RiseTimeThresholdMin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RiseTimeThresholdMax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NameOfFigure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sysName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.stepWithInfo" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Trace the step response and the interesting points and return those 
+interesting informations.</p>
+<p>WARNING: Overshoot is in %!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sys: Linear Time Invariant (LTI)</strong></dt><dd><p>System analysed.</p>
+</dd>
+<dt><strong>info: info</strong></dt><dd><p>Object in which to store all the informations of the step response</p>
+</dd>
+<dt><strong>T: 1D array, optional</strong></dt><dd><p>Time vector.</p>
+</dd>
+<dt><strong>SettlingTimeThreshold: float, optional</strong></dt><dd><p>Threshold of the settling time.</p>
+</dd>
+<dt><strong>RiseTimeThresholdMin: float, optional</strong></dt><dd><p>Lower rise time threshold.</p>
+</dd>
+<dt><strong>RiseTimeThresholdMax: float, optional</strong></dt><dd><p>Upper rise time threshold.</p>
+</dd>
+<dt><strong>resolution: long, optional</strong></dt><dd><p>Number of points calculated to trace the step response.</p>
+</dd>
+<dt><strong>NameOfFigure: String, optional</strong></dt><dd><p>Name of the figure in which plot the step response.</p>
+</dd>
+<dt><strong>sysName: String, optional</strong></dt><dd><p>Name of the system to plot.</p>
+</dd>
+<dt><strong>linestyle: “-.” , “–” , “:” , “-“ , optional</strong></dt><dd><p>The line style used to plot the step response (default is “-“).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.step_">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">step_</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NameOfFigure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sysName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linestyle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.step_" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Trace the step with the given parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sys: Linear Time Invariant (LTI)</strong></dt><dd><p>System analysed.</p>
+</dd>
+<dt><strong>T: 1D array</strong></dt><dd><p>Time vector.</p>
+</dd>
+<dt><strong>resolution: long</strong></dt><dd><p>Number of points calculated to trace the step response.</p>
+</dd>
+<dt><strong>NameOfFigure: String</strong></dt><dd><p>Name of the figure in which plot the step response.</p>
+</dd>
+<dt><strong>sysName: String</strong></dt><dd><p>Name of the system to plot.</p>
+</dd>
+<dt><strong>linestyle: “-.” , “–” , “:” , “-“ , optional</strong></dt><dd><p>The line style used to plot the step response (default is “-“).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ReguLabFct.step_info">
+<code class="sig-prename descclassname"><span class="pre">ReguLabFct.</span></code><code class="sig-name descname"><span class="pre">step_info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SettlingTimeThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RiseTimeThresholdMin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RiseTimeThresholdMax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ReguLabFct.step_info" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Trace the interesting points of a given step plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>t: 1D array</strong></dt><dd><p>Time vector.</p>
+</dd>
+<dt><strong>y: 1D array</strong></dt><dd><p>Response of the system.</p>
+</dd>
+<dt><strong>info: info</strong></dt><dd><p>Object in which to store all the informations of the step response</p>
+</dd>
+<dt><strong>SettlingTimeThreshold: float, optional</strong></dt><dd><p>Threshold of the settling time (default is 0.05).</p>
+</dd>
+<dt><strong>RiseTimeThresholdMin: float, optional</strong></dt><dd><p>Lower rise time threshold (default is 0.10).</p>
+</dd>
+<dt><strong>RiseTimeThresholdMax: float, optional</strong></dt><dd><p>Upper rise time threshold (default is 0.90).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Final/7.6/7.6.html" class="btn btn-neutral float-left" title="7.6 Exercices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Alban Van Laethem.
+
+    </p>
+  </div>
+    
+    
+    
+    Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
